@@ -109,14 +109,10 @@
 						}
 					}
 				} else {
-<<<<<<< HEAD
-					toast.error(`File not found.`);
-=======
 					toast.error(
 						`Unknown File Type '${file['type']}', but accepting and treating as plain text`
 					);
 					uploadDoc(file);
->>>>>>> bb76621 (Keerthi: Fix chat window width)
 				}
 			}
 
@@ -160,7 +156,6 @@
 	<EditDocModal bind:show={showEditDocModal} {selectedDoc} />
 {/key}
 
-<<<<<<< HEAD
 <input
 	id="upload-doc-input"
 	bind:files={inputFiles}
@@ -192,13 +187,10 @@
 	}}
 />
 
-<div class="min-h-screen w-full flex justify-center dark:text-white">
-=======
 <div
 	class="min-h-screen flex justify-center dark:text-white ml-auto transition-all"
 	style={showSidebar ? 'width: calc(100% - 260px)' : 'width: 100%'}
 >
->>>>>>> bb76621 (Keerthi: Fix chat window width)
 	<div class=" py-2.5 flex flex-col justify-between w-full">
 		<div class="max-w-2xl mx-auto w-full px-3 md:px-0 my-10">
 			<div class="mb-6 flex justify-between items-center">
@@ -249,9 +241,7 @@
 				</div>
 			</div>
 
-<<<<<<< HEAD
 			<!-- <div>
-=======
 			<input
 				id="upload-doc-input"
 				bind:files={inputFiles}
@@ -281,7 +271,6 @@
 			/>
 
 			<div>
->>>>>>> bb76621 (Keerthi: Fix chat window width)
 				<div
 					class="my-3 py-16 rounded-lg border-2 border-dashed dark:border-gray-600 {dragged &&
 						' dark:bg-gray-700'} "
