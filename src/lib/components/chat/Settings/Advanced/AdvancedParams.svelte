@@ -12,7 +12,7 @@
 		top_k: '',
 		top_p: '',
 		tfs_z: '',
-		num_ctx: '',
+		// num_ctx: '',
 		num_predict: ''
 	};
 </script>
