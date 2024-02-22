@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from apps.web.models.users import Users
 from constants import ERROR_MESSAGES
 from utils.utils import decode_token, get_current_user
-from config import OPENAI_API_BASE_URL, OPENAI_API_KEY, CACHE_DIR
+from config import AZURE_OPENAI_API_BASE_URL, AZURE_OPENAI_API_KEY, AZURE_OPENAI_API_VERSION, CACHE_DIR
 
 import hashlib
 from pathlib import Path
@@ -24,8 +24,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.state.OPENAI_API_BASE_URL = OPENAI_API_BASE_URL
-app.state.OPENAI_API_KEY = OPENAI_API_KEY
+app.state.AZURE_OPENAI_API_BASE_URL = AZURE_OPENAI_API_BASE_URL
+app.state.AZURE_OPENAI_API_KEY = AZURE_OPENAI_API_KEY
+app.state.AZURE_OPENAI_API_VERSION = AZURE_OPENAI_API_VERSION
 
 
 class UrlUpdateForm(BaseModel):
@@ -36,39 +37,64 @@ class KeyUpdateForm(BaseModel):
     key: str
 
 
+class VersionUpdateForm(BaseModel):
+    version: str
+
+
 @app.get("/url")
-async def get_openai_url(user=Depends(get_current_user)):
+async def get_azure_openai_url(user=Depends(get_current_user)):
     if user and user.role == "admin":
-        return {"OPENAI_API_BASE_URL": app.state.OPENAI_API_BASE_URL}
+        return {"AZURE_OPENAI_API_BASE_URL": app.state.AZURE_OPENAI_API_BASE_URL}
     else:
         raise HTTPException(
             status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
 
 
 @app.post("/url/update")
-async def update_openai_url(form_data: UrlUpdateForm, user=Depends(get_current_user)):
+async def update_azure_openai_url(form_data: UrlUpdateForm, user=Depends(get_current_user)):
     if user and user.role == "admin":
-        app.state.OPENAI_API_BASE_URL = form_data.url
-        return {"OPENAI_API_BASE_URL": app.state.OPENAI_API_BASE_URL}
+        app.state.AZURE_OPENAI_API_BASE_URL = form_data.url
+        return {"AZURE_OPENAI_API_BASE_URL": app.state.AZURE_OPENAI_API_BASE_URL}
     else:
         raise HTTPException(
             status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
 
 
 @app.get("/key")
-async def get_openai_key(user=Depends(get_current_user)):
+async def get_azure_openai_key(user=Depends(get_current_user)):
     if user and user.role == "admin":
-        return {"OPENAI_API_KEY": app.state.OPENAI_API_KEY}
+        return {"AZURE_OPENAI_API_KEY": app.state.AZURE_OPENAI_API_KEY}
     else:
         raise HTTPException(
             status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
 
 
 @app.post("/key/update")
-async def update_openai_key(form_data: KeyUpdateForm, user=Depends(get_current_user)):
+async def update_azure_openai_key(form_data: KeyUpdateForm, user=Depends(get_current_user)):
+    print(form_data)
     if user and user.role == "admin":
-        app.state.OPENAI_API_KEY = form_data.key
-        return {"OPENAI_API_KEY": app.state.OPENAI_API_KEY}
+        app.state.AZURE_OPENAI_API_KEY = form_data.key
+        return {"AZURE_OPENAI_API_KEY": app.state.AZURE_OPENAI_API_KEY}
+    else:
+        raise HTTPException(
+            status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
+
+
+@app.get("/version")
+async def get_azure_openai_version(user=Depends(get_current_user)):
+    if user and user.role == "admin":
+        return {"AZURE_OPENAI_API_VERSION": app.state.AZURE_OPENAI_API_VERSION}
+    else:
+        raise HTTPException(
+            status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
+
+
+@app.post("/version/update")
+async def update_azure_openai_version(form_data: VersionUpdateForm, user=Depends(get_current_user)):
+    print(form_data)
+    if user and user.role == "admin":
+        app.state.AZURE_OPENAI_API_VERSION = form_data.version
+        return {"AZURE_OPENAI_API_VERSION": app.state.AZURE_OPENAI_API_VERSION}
     else:
         raise HTTPException(
             status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
@@ -76,12 +102,12 @@ async def update_openai_key(form_data: KeyUpdateForm, user=Depends(get_current_u
 
 @app.post("/audio/speech")
 async def speech(request: Request, user=Depends(get_current_user)):
-    target_url = f"{app.state.OPENAI_API_BASE_URL}/audio/speech"
+    target_url = f"{app.state.AZURE_OPENAI_API_BASE_URL}/audio/speech"
 
     if user.role not in ["user", "admin"]:
         raise HTTPException(
             status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
-    # if app.state.OPENAI_API_KEY == "":
+    # if app.state.AZURE_OPENAI_API_KEY == "":
     #     raise HTTPException(status_code=401, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
     body = await request.body()
@@ -98,7 +124,7 @@ async def speech(request: Request, user=Depends(get_current_user)):
         return FileResponse(file_path)
 
     headers = {}
-    headers["Authorization"] = f"Bearer {app.state.OPENAI_API_KEY}"
+    headers["Authorization"] = f"Bearer {app.state.AZURE_OPENAI_API_KEY}"
     headers["Content-Type"] = "application/json"
 
     try:
@@ -139,13 +165,13 @@ async def speech(request: Request, user=Depends(get_current_user)):
 
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def proxy(path: str, request: Request, user=Depends(get_current_user)):
-    target_url = f"{app.state.OPENAI_API_BASE_URL}/{path}"
-    print(target_url, app.state.OPENAI_API_KEY)
+    target_url = f"{app.state.AZURE_OPENAI_API_BASE_URL}/{path}"
+    print(target_url, app.state.AZURE_OPENAI_API_KEY)
 
     if user.role not in ["user", "admin"]:
         raise HTTPException(
             status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
-    # if app.state.OPENAI_API_KEY == "":
+    # if app.state.AZURE_OPENAI_API_KEY == "":
     #     raise HTTPException(status_code=401, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
     body = await request.body()
@@ -169,8 +195,9 @@ async def proxy(path: str, request: Request, user=Depends(get_current_user)):
         print("Error loading request body into a dictionary:", e)
 
     headers = {}
-    headers["Authorization"] = f"Bearer {app.state.OPENAI_API_KEY}"
     headers["Content-Type"] = "application/json"
+
+    target_url = f"{target_url}?api-version={app.state.AZURE_OPENAI_API_VERSION}&api-key={app.state.AZURE_OPENAI_API_KEY}"
 
     try:
         r = requests.request(
@@ -201,7 +228,7 @@ async def proxy(path: str, request: Request, user=Depends(get_current_user)):
 
             response_data = r.json()
 
-            if "/openai" in app.state.OPENAI_API_BASE_URL and path == "models":
+            if "/azure-openai" in app.state.AZURE_OPENAI_API_BASE_URL and path == "models":
                 response_data["data"] = list(
                     filter(
                         lambda model: "gpt" in model["id"], response_data["data"])

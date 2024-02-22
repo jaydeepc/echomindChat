@@ -67,6 +67,14 @@ if OPENAI_API_BASE_URL == "":
 
 
 ####################################
+# AZURE_OPENAI_API
+####################################
+
+AZURE_OPENAI_API_KEY = os.environ.get("AZURE_OPENAI_API_KEY", "")
+AZURE_OPENAI_API_BASE_URL = os.environ.get("AZURE_OPENAI_API_BASE_URL", "")
+AZURE_OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "")
+
+####################################
 # WEBUI
 ####################################
 
