@@ -17,29 +17,45 @@
 	let SHOULD_USE_AZURE = false;
 
 	const updateOpenAIHandler = async () => {
+		localStorage.setItem('azure_openai_api_key', OPENAI_API_KEY);
+		localStorage.setItem('openai_azure_endpoint', OPENAI_API_BASE_URL);
 		OPENAI_API_BASE_URL = await updateOpenAIUrl(localStorage.token, OPENAI_API_BASE_URL);
 		OPENAI_API_KEY = await updateOpenAIKey(localStorage.token, OPENAI_API_KEY);
 		localStorage.setItem('use_azure', SHOULD_USE_AZURE.toString());
-		localStorage.setItem('azure_openai_version', AZURE_OPENAI_VERSION);
-		localStorage.setItem('azure_deployment_name', AZURE_DEPLOYMENT_NAME);
-		localStorage.setItem('azure_model_name', AZURE_MODEL_NAME);
+
+		if (SHOULD_USE_AZURE) {
+			localStorage.setItem('azure_openai_version', AZURE_OPENAI_VERSION);
+			const azure_models = [
+				{
+					id: AZURE_MODEL_NAME?.length ? AZURE_MODEL_NAME : AZURE_DEPLOYMENT_NAME,
+					object: 'model',
+					created: new Date().getTime(),
+					owned_by: 'admin',
+					deployment_name: AZURE_DEPLOYMENT_NAME.trim(),
+					model_name: AZURE_MODEL_NAME
+				}
+			];
+			localStorage.setItem('azure_models', JSON.stringify(azure_models));
+		}
 
 		await models.set(await getModels());
 	};
 
 	onMount(async () => {
 		if ($user.role === 'admin') {
-			OPENAI_API_BASE_URL = await getOpenAIUrl(localStorage.token);
+			OPENAI_API_BASE_URL = (await getOpenAIUrl(localStorage.token)) || 'https://api.openai.com/v1';
 			OPENAI_API_KEY = await getOpenAIKey(localStorage.token);
 
 			AZURE_OPENAI_VERSION = localStorage.getItem('azure_openai_version') || '';
 			console.log(localStorage.getItem('use_azure'));
-			// should_use_azure should be true if in localstorage it says 'true' else false
 			SHOULD_USE_AZURE = localStorage.getItem('use_azure') === 'true';
-			// SHOULD_USE_AZURE = (localStorage.getItem('use_azure')) || false;
-			console.log({ SHOULD_USE_AZURE });
-			AZURE_DEPLOYMENT_NAME = localStorage.getItem('azure_deployment_name') || '';
-			AZURE_MODEL_NAME = localStorage.getItem('azure_model_name') || '';
+			// console.log({ SHOULD_USE_AZURE });
+			// AZURE_DEPLOYMENT_NAME = localStorage.getItem('azure_deployment_name') || '';
+			// AZURE_MODEL_NAME = localStorage.getItem('azure_model_name') || '';
+
+			const azure_models = JSON.parse(localStorage.getItem('azure_models') || '[]');
+			AZURE_DEPLOYMENT_NAME = azure_models[0]?.deployment_name || '';
+			AZURE_MODEL_NAME = azure_models[0]?.model_name || '';
 		}
 	});
 

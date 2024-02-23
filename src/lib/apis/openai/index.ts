@@ -137,23 +137,33 @@ export const updateOpenAIKey = async (token: string = '', key: string) => {
 export const getOpenAIModels = async (token: string = '') => {
 	let error = null;
 
-	const res = await fetch(`${OPENAI_API_BASE_URL}/models`, {
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			...(token && { authorization: `Bearer ${token}` })
-		}
-	})
-		.then(async (res) => {
-			if (!res.ok) throw await res.json();
-			return res.json();
+	const shouldUseAzure = localStorage.getItem('use_azure') === 'true';
+	const azureModels = JSON.parse(localStorage.getItem('azure_models') || '[]');
+	let res = [];
+
+	if (shouldUseAzure) {
+		console.log('using azure');
+		res = { data: azureModels };
+	} else {
+		res = await fetch(`${OPENAI_API_BASE_URL}/models`, {
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				...(token && { authorization: `Bearer ${token}` })
+			}
 		})
-		.catch((err) => {
-			console.log(err);
-			error = `OpenAI: ${err?.error?.message ?? 'Network Problem'}`;
-			return [];
-		});
+			.then(async (res) => {
+				if (!res.ok) throw await res.json();
+				const data = await res.json();
+				return data;
+			})
+			.catch((err) => {
+				console.log(err);
+				error = `OpenAI: ${err?.error?.message ?? 'Network Problem'}`;
+				return [];
+			});
+	}
 
 	if (error) {
 		throw error;
@@ -163,10 +173,10 @@ export const getOpenAIModels = async (token: string = '') => {
 
 	return models
 		? models
-				.map((model) => ({ name: model.id, external: true }))
-				.sort((a, b) => {
-					return a.name.localeCompare(b.name);
-				})
+			.map((model) => ({ name: model.id, external: true }))
+			.sort((a, b) => {
+				return a.name.localeCompare(b.name);
+			})
 		: models;
 };
 
@@ -209,13 +219,40 @@ export const getOpenAIModelsDirect = async (
 
 export const generateOpenAIChatCompletion = async (token: string = '', body: object) => {
 	let error = null;
+	let API_URL = `${OPENAI_API_BASE_URL}/chat/completions`;
+	const shouldUseAzure = localStorage.getItem('use_azure') === 'true';
+	let headers = {
+		Authorization: `Bearer ${token}`,
+		'Content-Type': 'application/json'
+	};
+	if (shouldUseAzure) {
+		console.log('using azure');
+		const azure_openai_api_key = localStorage.getItem('azure_openai_api_key');
+		const OPENAI_AZURE_ENDPOINT = localStorage.getItem('openai_azure_endpoint');
+		const azure_openai_version = localStorage.getItem('azure_openai_version');
+		const azure_models = JSON.parse(localStorage.getItem('azure_models') || '[]');
 
-	const res = await fetch(`${OPENAI_API_BASE_URL}/chat/completions`, {
+		if (
+			!azure_openai_api_key ||
+			!OPENAI_AZURE_ENDPOINT ||
+			!azure_openai_version ||
+			!azure_models?.length
+		) {
+			console.error('Error: Azure openaiapikey, endpoint, version or models not found');
+			return;
+		}
+		const { deployment_name } = azure_models[0];
+		API_URL = `${OPENAI_AZURE_ENDPOINT}/openai/deployments/${deployment_name}/chat/completions?api-version=${azure_openai_version}`;
+
+		headers = {
+			'Content-Type': 'application/json',
+			'api-key': azure_openai_api_key
+		};
+	}
+
+	const res = await fetch(`${API_URL}`, {
 		method: 'POST',
-		headers: {
-			Authorization: `Bearer ${token}`,
-			'Content-Type': 'application/json'
-		},
+		headers,
 		body: JSON.stringify(body)
 	}).catch((err) => {
 		console.log(err);
