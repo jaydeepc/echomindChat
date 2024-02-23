@@ -72,7 +72,6 @@
 
 					for (const line of lines) {
 						if (line !== '') {
-							console.log(line);
 							let data = JSON.parse(line);
 
 							if ('detail' in data) {
