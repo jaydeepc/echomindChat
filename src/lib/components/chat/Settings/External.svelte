@@ -49,10 +49,6 @@
 			AZURE_OPENAI_VERSION = localStorage.getItem('azure_openai_version') || '';
 			console.log(localStorage.getItem('use_azure'));
 			SHOULD_USE_AZURE = localStorage.getItem('use_azure') === 'true';
-			// console.log({ SHOULD_USE_AZURE });
-			// AZURE_DEPLOYMENT_NAME = localStorage.getItem('azure_deployment_name') || '';
-			// AZURE_MODEL_NAME = localStorage.getItem('azure_model_name') || '';
-
 			const azure_models = JSON.parse(localStorage.getItem('azure_models') || '[]');
 			AZURE_DEPLOYMENT_NAME = azure_models[0]?.deployment_name || '';
 			AZURE_MODEL_NAME = azure_models[0]?.model_name || '';
