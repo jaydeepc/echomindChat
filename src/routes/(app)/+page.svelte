@@ -396,7 +396,6 @@
 
 					for (const line of lines) {
 						if (line !== '') {
-							console.log(line);
 							let data = JSON.parse(line);
 
 							if ('detail' in data) {
@@ -607,13 +606,11 @@
 
 					for (const line of lines) {
 						if (line !== '') {
-							console.log(line);
 							if (line === 'data: [DONE]') {
 								responseMessage.done = true;
 								messages = messages;
 							} else {
 								let data = JSON.parse(line.replace(/^data: /, ''));
-								console.log(data);
 
 								if (responseMessage.content == '' && data.choices[0].delta.content == '\n') {
 									continue;
