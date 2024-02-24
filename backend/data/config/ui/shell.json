@@ -1,0 +1,21 @@
+{
+	"id": "shell",
+	"orgLogo": {
+		"light": "images/shell_logo.png",
+		"dark": "images/shell_logo.png",
+		"alt": "Shell Logo"
+	},
+	"tagline": "Chat with confidence. A chatGPT Clone based on Ollama UI with local opensource models.",
+	"capabilities": {
+		"modelfiles": {
+			"disabled": true
+		},
+		"prompts": {
+			"disabled": false
+		}
+	},
+	"assistant": {
+		"name": "Shell-Bot",
+		"icon": "images/shell_logo_bot.png"
+	}
+}

@@ -59,6 +59,7 @@
 	<link rel="stylesheet" type="text/css" href="/themes/rosepine.css" />
 	<link rel="stylesheet" type="text/css" href="/themes/rosepine-dawn.css" />
 	<link rel="stylesheet" type="text/css" href="/themes/thoughtworks.css" />
+	<link rel="stylesheet" type="text/css" href="/themes/shell.css" />
 </svelte:head>
 
 {#if loaded}

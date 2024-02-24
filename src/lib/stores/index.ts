@@ -8,7 +8,8 @@ export const user = writable(undefined);
 export const theme = writable('dark');
 
 export const uiConfigs = writable([]);
-export const selectedUiConfigId = writable("thoughtworks");
+export const selectedUiConfigId = writable("shell");
+
 
 export const chatId = writable('');
 
