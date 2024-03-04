@@ -1,4 +1,4 @@
-import { OLLAMA_API_BASE_URL } from '$lib/constants';
+import { OLLAMA_API_BASE_URL, SKIP_WARN_WHEN_OLLAMA_NOT_PRESENT } from '$lib/constants';
 
 export const getOllamaAPIUrl = async (token: string = '') => {
 	let error = null;
@@ -92,7 +92,7 @@ export const getOllamaVersion = async (token: string = '') => {
 			return null;
 		});
 
-	if (error) {
+	if (error && !SKIP_WARN_WHEN_OLLAMA_NOT_PRESENT) {
 		throw error;
 	}
 
@@ -124,7 +124,7 @@ export const getOllamaModels = async (token: string = '') => {
 			return null;
 		});
 
-	if (error) {
+	if (error && !SKIP_WARN_WHEN_OLLAMA_NOT_PRESENT) {
 		throw error;
 	}
 
