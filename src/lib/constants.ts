@@ -26,12 +26,12 @@ export const SUPPORTED_FILE_TYPE = [
 ];
 
 export const SUPPORTED_FILE_EXTENSIONS = [
-	'md', 'rst','go', 'py', 'java', 'sh', 'bat', 'ps1', 'cmd', 'js', 
-	'ts', 'css', 'cpp', 'hpp','h', 'c', 'cs', 'sql', 'log', 'ini',
+	'md', 'rst', 'go', 'py', 'java', 'sh', 'bat', 'ps1', 'cmd', 'js',
+	'ts', 'css', 'cpp', 'hpp', 'h', 'c', 'cs', 'sql', 'log', 'ini',
 	'pl', 'pm', 'r', 'dart', 'dockerfile', 'env', 'php', 'hs',
 	'hsc', 'lua', 'nginxconf', 'conf', 'm', 'mm', 'plsql', 'perl',
 	'rb', 'rs', 'db2', 'scala', 'bash', 'swift', 'vue', 'svelte',
-	'doc','docx', 'pdf', 'csv', 'txt', 'xls', 'xlsx'
+	'doc', 'docx', 'pdf', 'csv', 'txt', 'xls', 'xlsx'
 ];
 
 // Source: https://kit.svelte.dev/docs/modules#$env-static-public
@@ -43,3 +43,5 @@ export const SUPPORTED_FILE_EXTENSIONS = [
 // OLLAMA_API_BASE_URL="http://localhost:11434/api"
 // # Public
 // PUBLIC_API_BASE_URL=$OLLAMA_API_BASE_URL
+
+export const SKIP_WARN_WHEN_OLLAMA_NOT_PRESENT = true

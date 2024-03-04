@@ -24,7 +24,11 @@
 		tags,
 		uiConfigs
 	} from '$lib/stores';
-	import { REQUIRED_OLLAMA_VERSION, WEBUI_API_BASE_URL } from '$lib/constants';
+	import {
+		REQUIRED_OLLAMA_VERSION,
+		SKIP_WARN_WHEN_OLLAMA_NOT_PRESENT,
+		WEBUI_API_BASE_URL
+	} from '$lib/constants';
 
 	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
@@ -74,7 +78,10 @@
 		ollamaVersion = version;
 
 		console.log(ollamaVersion);
-		if (checkVersion(REQUIRED_OLLAMA_VERSION, ollamaVersion)) {
+		if (
+			checkVersion(REQUIRED_OLLAMA_VERSION, ollamaVersion) &&
+			!SKIP_WARN_WHEN_OLLAMA_NOT_PRESENT
+		) {
 			toast.error(`Ollama Version: ${ollamaVersion !== '' ? ollamaVersion : 'Not Detected'}`);
 		}
 	};
@@ -265,7 +272,7 @@
 					</div>
 				</div>
 			</div>
-		{:else if checkVersion(REQUIRED_OLLAMA_VERSION, ollamaVersion ?? '0')}
+		{:else if checkVersion(REQUIRED_OLLAMA_VERSION, ollamaVersion ?? '0') && !SKIP_WARN_WHEN_OLLAMA_NOT_PRESENT}
 			<div class="fixed w-full h-full flex z-50">
 				<div
 					class="absolute w-full h-full backdrop-blur-md bg-white/20 dark:bg-gray-900/50 flex justify-center"
