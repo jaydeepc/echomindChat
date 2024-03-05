@@ -233,7 +233,7 @@
 				{#if message.model in modelfiles}
 					{modelfiles[message.model]?.title}
 				{:else}
-					Shell-Bot <span class=" text-gray-500 text-sm font-medium"
+					Fortrea-Bot <span class=" text-gray-500 text-sm font-medium"
 						>{message.model ? ` ${message.model}` : ''}</span
 					>
 				{/if}

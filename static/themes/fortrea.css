@@ -1,0 +1,73 @@
+.shell * {
+    color: #ffffff !important; /* White text for general readability */
+    stroke: #28a76e !important; /* Shell red for outlines or strokes, used sparingly */
+}
+
+.shell .app > * {
+    background-color: #28a76e !important; /* Dark grey for app backgrounds, ensuring good contrast with white text */
+}
+
+.shell #nav {
+    background-color: #050505; /* Slightly lighter grey for navigation, for a subtle contrast */
+}
+
+.shell .py-2\.5.my-auto.flex.flex-col.justify-between.h-screen {
+    background: #1E1E1E; /* Even darker shade for full-screen elements to add depth */
+}
+
+.shell .bg-white.dark\:bg-gray-800 {
+    background: #28a76e; /* Medium grey for elements that need to stand out without using bright colors */
+}
+
+.shell .w-4.h-4 {
+    fill: #28a76e; /* Shell red for icons, offering a pop of brand color */
+}
+
+.shell #chat-textarea {
+    background: #2a2a2a;
+    color: #ffffff; /* Ensuring text is white for readability */
+    margin: 0.3rem;
+    padding: 0.5rem;
+}
+
+.shell .bg-gradient-to-t.from-white.dark\:from-gray-800.from-40\%.pb-2 {
+    background: linear-gradient(to top, #404040 60%, #262626 40%); /* A subtle gradient from medium to dark grey */
+    padding-top: 0.6rem;
+}
+
+/* Adjusting button and interactive elements to use brand colors subtly */
+.shell .text-white.bg-gray-100.dark\:text-gray-800.dark\:bg-gray-600.disabled.transition.rounded-lg.p-1.mr-0\.5.w-7.h-7.self-center,
+.shell .hover\:bg-gray-900.dark\:bg-white.dark\:text-black.dark\:hover\:bg-gray-100.transition.rounded-lg.p-1.mr-0\.5.w-7.h-7.self-center {
+    background-color: #d52b1e; /* Shell red for buttons */
+    transition: background-color 0.2s ease-out linear;
+}
+
+.shell .hover\:bg-gray-900:hover {
+    --tw-bg-opacity: 1;
+    background-color: #28a76e; /* Shell yellow for hover states, adding a vibrant touch */
+}
+
+/* Further simplifying the design for clarity and consistency */
+.shell .bg-black.text-white.hover\:bg-gray-900.dark\:bg-white.dark\:text-black.dark\:hover\:bg-gray-100.transition.rounded-lg.p-1.mr-0\.5.w-7.h-7.self-center > *,
+.shell .px-4.py-2.bg-emerald-600.hover\:bg-emerald-700.text-gray-100.transition.rounded {
+    background-color: #28a76e; /* A consistent grey for various UI components */
+    color: #ffffff; /* Keeping text white for readability */
+}
+
+/* Ensuring that the design is cohesive, applying the same principles across all components */
+.shell #chat-search > *,
+:is(.dark .dark\:outline-gray-600),
+:is(.dark .dark\:bg-gray-600),
+:is(.dark .dark\:bg-gray-700),
+:is(.dark .dark\:bg-gray-800),
+:is(.dark .dark\:bg-gray-600:hover) {
+    background-color: #262626; /* Uniform dark grey background for cohesiveness */
+    color: #ffffff; /* White text for contrast and readability */
+}
+
+/* Customizing specific components with Shell branding in a subtle, professional manner */
+.shell .message.svelte-1nauejd,
+.shell .w-full.rounded.p-4.text-sm.dark\:text-gray-300.dark\:bg-gray-800.outline-none.resize-none,
+.shell .w-full.rounded.py-2.px-4.text-sm.dark\:text-gray-300.dark\:bg-gray-800.outline-none.svelte-1vx7r9s {
+    color: #28a76e !important; /* Shell red for important text, used sparingly for emphasis */
+}

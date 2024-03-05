@@ -69,7 +69,7 @@
 	<div>
 		<div class=" mb-1 text-sm font-medium">WebUI Settings</div>
 
-		<div class=" py-0.5 flex w-full justify-between">
+		<!-- <div class=" py-0.5 flex w-full justify-between">
 			<div class=" self-center text-xs font-medium">Theme</div>
 			<div class="flex items-center relative">
 				<div class=" absolute right-16">
@@ -98,9 +98,9 @@
 							/>
 						</svg>
 					{/if}
-				</div>
+				</div> -->
 
-				<select
+				<!-- <select
 					class="w-fit pr-8 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
 					bind:value={theme}
 					placeholder="Select a theme"
@@ -128,9 +128,10 @@
 					<option value="rose-pine-dawn light">Rosé Pine Dawn</option>
 					<option value="thoughtworks dark">Thoughtworks Theme</option>
 					<option value="shell dark">Shell Theme</option>
-				</select>
-			</div>
-		</div>
+					<option value="fortrea dark">Fortrea Theme</option>
+				</select> -->
+			<!-- </div>
+		</div> -->
 
 		<div>
 			<div class=" py-0.5 flex w-full justify-between">

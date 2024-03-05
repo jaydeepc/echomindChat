@@ -1,0 +1,21 @@
+{
+	"id": "fortrea",
+	"orgLogo": {
+		"light": "images/fortrea_logo_black.png",
+		"dark": "images/fortrea-logo-white.png",
+		"alt": "Fortrea Logo"
+	},
+	"tagline": "Chat with confidence. A chatGPT Clone based on Ollama UI with local opensource models.",
+	"capabilities": {
+		"modelfiles": {
+			"disabled": true
+		},
+		"prompts": {
+			"disabled": false
+		}
+	},
+	"assistant": {
+		"name": "Fortrea-Bot",
+		"icon": "images/fortrea_bot.png"
+	}
+}
